@@ -3,15 +3,12 @@ package leetcode.com.math;
 
 import java.util.*;
 
-/*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- * @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ String @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- * @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- * */
 public class Solution {
 
     public static void main(String[] args) {
-        int n = 4;
-        System.out.println(eratosfenPrimes(n));
+        int[] a = new int[]{3, 2};  // 1 2 3 4 5 6 7 8
+        int[] b = new int[]{2, 4};
+        System.out.println(findMedianSortedArrays(a, b));
     }
 
     /*-----------------------------Fizz Buzz---------------------------------------------*/
@@ -112,9 +109,40 @@ public class Solution {
             nums1[k--] = nums2[j--];
         }
     }
-}
 
-/*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- * @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ String @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- * @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- * */
+    // 1,2,3,4,5
+    public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        final int len1 = nums1.length, len2 = nums2.length;
+        final int l = len1 + len2;
+        int[] mergedArray = new int[l];
+        int i = 0, j = 0, k = 0;
+
+        while (i < len1 && j < len2) {
+            mergedArray[k++] = nums1[i] < nums2[j] ? nums1[i++] : nums2[j++];
+        }
+        while (i < len1) mergedArray[k++] = nums1[i++];
+        while (j < len2) mergedArray[k++] = nums2[j++];
+        return l % 2 == 0 ? ((double) (mergedArray[(l >> 1) - 1] + mergedArray[l >> 1]) / 2d) : mergedArray[l >> 1];
+    }
+
+    /*-----------------------------Top K Frequent Elements---------------------------------------------*/
+    public static int[] topKFrequent(int[] nums, int k) {
+        int[] answer = new int[k];
+        int cursor = 0;
+        int counter = 0;
+        boolean[] helper = new boolean[k];
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] == nums[j]) {
+                    counter++;
+                    //answer[cursor]
+                }
+            }
+        }
+
+        return answer;
+    }
+    /*-----------------------------Top K Frequent Elements---------------------------------------------*/
+
+
+}
