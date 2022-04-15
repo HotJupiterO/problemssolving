@@ -1,19 +1,22 @@
 package leetcode.com.math;
 
 
+import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Solution {
 
     public static void main(String[] args) {
-        int[] a = new int[]{3, 2};  // 1 2 3 4 5 6 7 8
-        int[] b = new int[]{2, 4};
-        System.out.println(findMedianSortedArrays(a, b));
+        final int[] b = new int[]{7, 13, 1, 2, 6};
+        System.out.println("=======RADIX SORT=======");
+        System.out.println("Input array: " + Arrays.toString(b));
+        System.out.println("Sorted array: " + Arrays.toString(radixSort(b)));
     }
 
     /*-----------------------------Fizz Buzz---------------------------------------------*/
     public static List<String> fizzBuzz(int n) {
-        List<String> l = new ArrayList<>();
+        final List<String> l = new ArrayList<>();
         for (int i = 1; i <= n; i++) {
             if (i % 15 == 0) l.add("FizzBuzz");
             else if (i % 3 == 0) l.add("Fizz");
@@ -26,7 +29,7 @@ public class Solution {
 
     /*-----------------------------Count Primes---------------------------------------------*/
     public static int eratosfenPrimes(int max) {
-        boolean[] isPrime = new boolean[max + 1];
+        final boolean[] isPrime = new boolean[max + 1];
         int count = 0;
         for (var i = 2; i * i < max; i++) {
             if (!isPrime[i]) {
@@ -36,10 +39,6 @@ public class Solution {
                 }
             }
         }
-        /*for (int i = 2; i < isPrime.length; i++) {
-            if (!isPrime[i]) count++;
-        }*/
-        // for (boolean b:isPrime) if (!b) count++;
         return count * count;
     }
 
@@ -73,7 +72,7 @@ public class Solution {
 
     public static int romanToInt(String s) {
         int result = 0;
-        Map<Character, Integer> map = new HashMap<>();
+        final Map<Character, Integer> map = new HashMap<>();
         map.put('I', 1);
         map.put('V', 5);
         map.put('X', 10);
@@ -114,7 +113,7 @@ public class Solution {
     public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
         final int len1 = nums1.length, len2 = nums2.length;
         final int l = len1 + len2;
-        int[] mergedArray = new int[l];
+        final int[] mergedArray = new int[l];
         int i = 0, j = 0, k = 0;
 
         while (i < len1 && j < len2) {
@@ -127,10 +126,12 @@ public class Solution {
 
     /*-----------------------------Top K Frequent Elements---------------------------------------------*/
     public static int[] topKFrequent(int[] nums, int k) {
-        int[] answer = new int[k];
+        //TODO
+        // try HashMap<Index, count>
+        final int[] answer = new int[k];
         int cursor = 0;
         int counter = 0;
-        boolean[] helper = new boolean[k];
+        final boolean[] helper = new boolean[k];
         for (int i = 0; i < nums.length; i++) {
             for (int j = i + 1; j < nums.length; j++) {
                 if (nums[i] == nums[j]) {
@@ -139,10 +140,40 @@ public class Solution {
                 }
             }
         }
-
         return answer;
     }
     /*-----------------------------Top K Frequent Elements---------------------------------------------*/
+
+
+    /*-----------------------------Radix Sort---------------------------------------------*/
+    public static int[] radixSort(int[] nums) {
+        final var capacity = 10;
+        final Map<Integer, Queue<Integer>> map = new HashMap<>(10);
+        for (var i = 0; i < capacity; i++) map.put(i, new LinkedList<>());
+        final var maxValue = getMax(nums);
+        var multiplier = 1;
+        while (maxValue - multiplier >= 0) {
+            for (var num : nums) {
+                int slice = num / multiplier;
+                map.get(slice % capacity).add(num);
+            }
+            int index = 0;
+            for (var i = 0; i < capacity; i++) {
+                while (!map.get(i).isEmpty()) {
+                    nums[index++] = map.get(i).remove();
+                }
+            }
+            multiplier *= capacity;
+        }
+        return nums;
+    }
+
+    public static int getMax(int[] nums) {
+        var max = 0;
+        for (var num : nums) if (num > max) max = num;
+        return max;
+    }
+    /*-----------------------------Radix Sort---------------------------------------------*/
 
 
 }
