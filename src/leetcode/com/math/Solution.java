@@ -8,10 +8,15 @@ import java.util.stream.Stream;
 public class Solution {
 
     public static void main(String[] args) {
-        final int[] b = new int[]{7, 13, 1, 2, 6};
-        System.out.println("=======RADIX SORT=======");
+        final int[] b = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 4, 9};
+        System.out.println("=======TopTFreq=======");
         System.out.println("Input array: " + Arrays.toString(b));
-        System.out.println("Sorted array: " + Arrays.toString(radixSort(b)));
+        System.out.println(Arrays.toString(topKFrequent(b, 2)));
+        Queue<Integer> priorityQueue = new PriorityQueue<>((x, y) -> Integer.compare(y, x));
+        for (int i : b) priorityQueue.offer(i);
+        System.out.println(priorityQueue);
+        while (!priorityQueue.isEmpty()) System.out.printf("%d ", priorityQueue.poll());
+
     }
 
     /*-----------------------------Fizz Buzz---------------------------------------------*/
@@ -126,29 +131,34 @@ public class Solution {
 
     /*-----------------------------Top K Frequent Elements---------------------------------------------*/
     public static int[] topKFrequent(int[] nums, int k) {
-        //TODO
-        // try HashMap<Index, count>
         final int[] answer = new int[k];
-        int cursor = 0;
-        int counter = 0;
-        final boolean[] helper = new boolean[k];
-        for (int i = 0; i < nums.length; i++) {
-            for (int j = i + 1; j < nums.length; j++) {
-                if (nums[i] == nums[j]) {
-                    counter++;
-                    //answer[cursor]
-                }
-            }
+        final Map<Integer, Integer> frequencyMap = new HashMap<>();
+        for (int num : nums) {
+            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
         }
+        int[][] frequencyArray = new int[frequencyMap.size()][2];
+
+        var index = 0;
+        for (var key : frequencyMap.keySet()) {
+            var val = frequencyMap.get(key);
+            frequencyArray[index][0] = val;
+            frequencyArray[index][1] = key;
+            index++;
+        }
+        Arrays.sort(frequencyArray, (b, a) -> Integer.compare(a[0], b[0]));
+        for (var i = 0; i < k; i++) answer[i] = frequencyArray[i][1];
+
         return answer;
     }
     /*-----------------------------Top K Frequent Elements---------------------------------------------*/
 
 
     /*-----------------------------Radix Sort---------------------------------------------*/
+
+
     public static int[] radixSort(int[] nums) {
         final var capacity = 10;
-        final Map<Integer, Queue<Integer>> map = new HashMap<>(10);
+        final Map<Integer, Queue<Integer>> map = new HashMap<>(capacity);
         for (var i = 0; i < capacity; i++) map.put(i, new LinkedList<>());
         final var maxValue = getMax(nums);
         var multiplier = 1;
