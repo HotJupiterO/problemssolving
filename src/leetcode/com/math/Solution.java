@@ -9,13 +9,11 @@ public class Solution {
 
     public static void main(String[] args) {
         final int[] b = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 4, 9};
+        int[] a = new Random().ints(100000000, 1, 10000).toArray();
         System.out.println("=======TopTFreq=======");
-        System.out.println("Input array: " + Arrays.toString(b));
-        System.out.println(Arrays.toString(topKFrequent(b, 2)));
-        Queue<Integer> priorityQueue = new PriorityQueue<>((x, y) -> Integer.compare(y, x));
-        for (int i : b) priorityQueue.offer(i);
-        System.out.println(priorityQueue);
-        while (!priorityQueue.isEmpty()) System.out.printf("%d ", priorityQueue.poll());
+        System.out.println("Input array: " + Arrays.toString(a));
+        int k = 10;
+        if (k < a.length - 1) System.out.printf("Top %d elements: %s", k, Arrays.toString(topKFrequent(a, k)));
 
     }
 
